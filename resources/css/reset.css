@@ -114,8 +114,6 @@ ul {
     width: 100%;
 }
 
-/* Bygg om till responsive
-https://www.w3schools.com/css/tryit.asp?filename=trycss_navbar_horizontal_responsive */
 .menu a{
     color: white;
     padding: 14px 15px;
@@ -189,8 +187,21 @@ section{
     padding-top: 20px;
     width: inherit;
 }
-
-
+.delete{
+    
+    font-family: quicksand;
+    background-color: #BA5536;
+    width: 15%;
+    color: white;
+    padding: 6px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+}
+.delete:hover {
+    background-color: #A43820;
+    color: white;
+}
 
 /* RECIPE SITE*********************STOP*/
 
@@ -305,24 +316,16 @@ input[type=submit] {
     padding: 10px 20px;
     margin: 8px;
     border: none;
-    border-radius: 4px;
-    
+    border-radius: 4px; 
 }
+
 input[type=submit]:hover {
     background-color: #A43820;
     color: white;
 }
 
-input[type=submit][class=delete] {
-    font-family: quicksand;
-    text-decoration: bold;
-    font-size: 0.8em;
-    background-color: #693D3D;
-    width: 7%;
-    float:right;
-    color: white;
-    padding: 4px 1px;
-    margin: 10px 0px 0px 20px;
-    border: none;
-    border-radius: 4px;
+input[type=submit][class=newuser] { 
+    width: 15%;
 }
+
+

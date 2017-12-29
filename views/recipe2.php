@@ -1,5 +1,3 @@
-
-<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -64,30 +62,56 @@
 		 </p>
 	</div>
 
+	
 	<div class="comments_section">
 	 	<h3>Comments</h3>
 	 	<div class="comment">
-	 		<div class="comment_item_head">
-		 			<div class="comment_item_name">Mamma</div>
-		 			<div class="comment_item_date">2017-11-11</div>
-	 			</div>
-	 			<div class="comment_item_body">
-	 				These are really good. I have made these several times. I usually make double and freeze them for a super quick weeknight dinner. I just throw them in in the sauce pan on low to make sure they defrost all the way through and they are done before the speg. is cooked! I have also used this same recipe to make meatloaf. Super good, easy versatile recipe!
-	 			</div>
-	 		
-	 			
-	 			<div class="comment_item_head">
-		 			<div class="comment_item_name">Pappa</div>
-		 			<div class="comment_item_date">2017-11-12</div>
-	 			</div>
-	 			<div class="comment_item_body">
-	 				These are good but you gotta have the cheese!!   --  Add a half cup grated Parmesan/Romano cheese and some parsley and you've got a deal!  (I also added an extra egg yolk).  Tender and succulent as a meatball can be. 
-	 			</div>
-	 		
+        <?php
+	
+		foreach ($comments as $comment)
+		{
+		  ?>
+		    <div class="c1">
+		      <p>
+		        <?php echo $comment['username']; ?><br />
+		        <?php echo $comment['comment']; ?><br />
+		        <?php echo nl2br($comment['message']);
+		       if($this->session->get(Constants::USER_LOGGED_IN) == "notLoggedIn" || $this->session->get(Constants::USER_LOGGED_IN) == null){
+			  		echo " not logged in";
+			  	}elseif( $this->session->get(Constants::USER_LOGGED_IN) ==$comment['username']){
+
+		          echo '<a class="delete" href="Meatballs?delete=' . $comment['idcomments'] . '"> Delete </a>';
+
+		        }
+		        
+		        ?>
+		      </p>
+		    </div>
+		  <?php
+		}
+		?>
 
 	 	</div>
 
-	</div>
+	 	<?php
+	  	$this->session->restart();
+	  	
+	  	if($this->session->get(Constants::USER_LOGGED_IN) == "notLoggedIn" || $this->session->get(Constants::USER_LOGGED_IN) == null){
+	  		
+	  	} else {
+	  		echo 
+	  		" <div class='comment_new'>
+		 		<br>
+			 	<form action='Meatballs' method='post'>
+				  <input type='text' name='user_comment' value='Write your comment here'/>
+				  <input type='hidden' id='recipeID' name='recipeID' value='1'/>
+				  <input type='submit' value='Submit'>
+				</form>
+			</div>
+		
+			";}
+		?>
+		</div>
 </section>
 
 </body>

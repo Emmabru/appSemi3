@@ -8,7 +8,7 @@ use tastyRep3\Model;
 // USE DB MODEL??
 //require_once('classes/tastyRep3/Model/User.php');
 
-class Login_view extends AbstractRequestHandler {
+class New_User extends AbstractRequestHandler {
     
     private $theUsername;
     private $thePassword;
@@ -29,35 +29,29 @@ class Login_view extends AbstractRequestHandler {
        
         //$contr = $this->session->get(Constants::CONTR_KEY_NAME);
         
-        if(empty($this->theUsername) || empty($this->thePassword)){
-            $status = 'Invalid';
-            $this->addVariable('status', $status);
-            
-            return 'login_page';
+        if(empty($this->theUsername) || empty($this->thePassword)){  
+            return 'newUserPage';
         }
         elseif(!preg_match("/^[a-zA-Z]*$/", $this->theUsername)){
             $status = 'Invalid';
-            $this->addVariable('status', $status);
               echo 2;
-            //return 'login_page';
+            return 'newUserPage';
         }
         elseif(strlen($this->theUsername) > 15 || strlen($this->thePassword) > 15){
             $status = 'Invalid';
-            $this->addVariable('status', $status);
-                        echo 3;
-            //return 'login_page';
+             echo 3;
+            return 'newUserPage';
         }
 
-        $filtPassword = filter_var($this->thePassword, FILTER_SANITIZE_STRING);
-        $filtUsername = filter_var($this->theUsername, FILTER_SANITIZE_STRING);
-        
+            $filtPassword = filter_var($this->thePassword, FILTER_SANITIZE_STRING);
+            $filtUsername = filter_var($this->theUsername, FILTER_SANITIZE_STRING);
          $control = new \tastyRep3\Controller\login_control();
-        if('ok' == $control->loginUser($this->theUsername,$this->thePassword)) {
+        if('ok' == $control->signUpUser($filtUsername,$filtPassword)) {
             //$this->session->restart();
-            $this->session->set(Constants::USER_LOGGED_IN, $this->theUsername);
+            $this->session->set(Constants::USER_LOGGED_IN, $filtUsername);
             return 'index';
-        }
-        //$contr = $this->session->get(Constants::CONTR_KEY_NAME);
-        
+        } else {
+             return 'newUserPage';
+        }    
     }    
 }

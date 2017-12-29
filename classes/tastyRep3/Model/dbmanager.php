@@ -1,6 +1,5 @@
 <?php
 namespace tastyRep3\Model;
-
 class dbmanager {
     
     private $conn;
@@ -16,7 +15,7 @@ class dbmanager {
     
     public function getUsernameByName($username){  
         $usernameSafe = mysqli_real_escape_string($this->conn, $username);     
-        $query = "SELECT user_name FROM users WHERE user_name ='".$usernameSafe."'";
+        $query = "SELECT username FROM user WHERE username ='".$usernameSafe."'";
         $result = mysqli_query($this->conn, $query);
         return $result;
     }
@@ -29,18 +28,16 @@ class dbmanager {
             echo "FAIL!!!!";
         }
         $row = mysqli_fetch_assoc($result);
+        echo $row['password'];
         return $row['password'];
     }
-    
+
     public function createUser($username,$password){
         $usernameSafe = mysqli_real_escape_string($this->conn,$username);
         $passwordSafe = mysqli_real_escape_string($this->conn,$password);
-        $query = "INSERT INTO users (user_name, user_password) VALUES ('".$usernameSafe."', '".$passwordSafe."');";
+        $query = "INSERT INTO user (username, password) VALUES ('".$usernameSafe."', '".$passwordSafe."');";
         mysqli_query($this->conn, $query);
     }
-    
-
-
 
     public function createComment($username, $recipeID, $user_comment){
         
@@ -66,35 +63,79 @@ class dbmanager {
             return 'okDB';
         }
        
-
     }
     
-
-
-
-
-
-
-
-
     public function getComment($recipe){
-        $recipeSafe = mysqli_real_escape_string($this->conn,$recipe);
+        /*$recipeSafe = mysqli_real_escape_string($this->conn,$recipe);
         $query = "SELECT * FROM recipecomment WHERE recipe = '".$recipeSafe."'";
         $queryResults = mysqli_query($this->conn, $query);
         return $queryResults;
+        */
+       
+        $list_of_comments = array();
+      $sql="SELECT commentID FROM recipeToComment WHERE recipeID = '" . $recipe . "';";
+      $result = mysqli_query($this->conn,$sql);
+          while($row= mysqli_fetch_assoc($result)){
+             array_push($list_of_comments, $row);
+          }
+      foreach ($result as $link){
+        $sql="SELECT c.comment,c.author, u.username, c.idcomments
+                from recipeToComment as r
+                inner join comments as c on c.idcomments= r.commentID
+                left join user as u on c.author = u.id_user
+                where r.commentID ='" . $link['commentID'] . "';";
+       // echo $sql . "</br>";
+        $result = mysqli_query($this->conn,$sql);
+            while($row= mysqli_fetch_assoc($result)){
+             array_push($list_of_comments, $row);
+             //echo $row['comment'];
+            }
+      }
+                 
+      return $list_of_comments;
     }
-    
-    public function getCommentAuthor($commentID){
-        $commentIDSafe = mysqli_real_escape_string($this->conn,$commentID);
-        $query = "SELECT userid FROM recipecomment WHERE commentID = '$commentIDSafe'";
-        $result = mysqli_query($this->conn, $query);
-        $row = mysqli_fetch_assoc($result);    
-        return $row['userid'];
-    }
+  
+   /* public function getCommentAuthor($recipe){
+        $recipeSafe = mysqli_real_escape_string($this->conn,$recipe);
+        $list_of_authors = array();
+        // alla kommentarers id för ett recept
+        $sql="SELECT commentID FROM recipeToComment WHERE recipeID = '" . $recipe . "'";
+        echo $sql . "</br>";
+        $result = mysqli_query($this->conn,$sql);
+         while($row= mysqli_fetch_assoc($result)){
+             array_push($list_of_comments, $row);
+          }
+    foreach ($result as $link){
+        $sql = "SELECT c.comment,c.author, u.username, c.idcomments
+                from recipeToComment as r
+                inner join comments as c on c.idcomments= r.commentID
+                left join user as u on c.author = u.id_user
+                where r.commentID ='25';";
+                echo $sql;
+                $result = mysqli_query($this->conn,$sql);
+            while($row= mysqli_fetch_assoc($result)){
+             array_push($list_of_authors, $row);
+             echo $row['username'];
+            }
+        }
+            return $list_of_authors;  
+/*
+        foreach ($row as $authorid){
+        $sql="SELECT author FROM comments WHERE idcomments = '" . $link['commentID'] . "'";
+        echo $sql . "</br>";
+        $result = mysqli_query($this->conn,$sql);
+            while($row= mysqli_fetch_assoc($result)){
+             array_push($list_of_comments, $row);
+             echo $row['author'];
+            }  
+      
+    }*/
     
     public function deleteComment($commentID){
         $commentIDSafe = mysqli_real_escape_string($this->conn,$commentID);
-        $query = "DELETE FROM recipecomment WHERE commentID = '$commentIDSafe'";
+        $query = "DELETE FROM comments WHERE idcomments = '$commentIDSafe';";
+        mysqli_query($this->conn, $query);
+        $query = "DELETE FROM recipeToComment WHERE commentID = '$commentIDSafe';";
         mysqli_query($this->conn, $query);
     }
 }

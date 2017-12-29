@@ -27,18 +27,9 @@ class login_control {
 
    public function loginUser($username, $password) {
      
-
-        //$login = $contr->
         $user = new \tastyRep3\Model\User($username,$password);
-
         $login = $user->loginUser();
 
-
-
-
-        
-        //echo '<pre>';
-        //echo var_dump(get_declared_classes() );
         if($login == 'Invalid'){
             echo 4;
             //return 'login_page';
@@ -50,6 +41,17 @@ class login_control {
             echo 5;
             //return 'login_page';
         }
+   }
+
+   public function signUpUser($username, $password){
+    
+      $user = new \tastyRep3\Model\User($username,$password);
+      $login = $user->signUpUser();
+      if( $login == 'signUpComplete'){
+        return 'ok';
+      } else {
+      }
+
    }
 }
 

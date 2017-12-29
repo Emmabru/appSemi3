@@ -16,7 +16,7 @@ class User {
     }
     
     public function signUpUser(){
-        $result = $this->dbmanager->getUsernameByName($this->username);  
+        $result = $this->dbmanager->getUsernameByName($this->username);
         $resultCheck = mysqli_num_rows($result);
         if($resultCheck > 0){
             return 'usernameTaken';
@@ -34,18 +34,5 @@ class User {
             return 'Invalid';
         }
 
-           /*
-        $result1 = $this->dbmanager->getUsernameByName($this->username);
-        $resultCheck1 = mysqli_num_rows($result1);
-        if($resultCheck1 > 0){
-            $result2 = $this->dbmanager->getUserPasswordByName($this->username);
-            if(password_verify($this->password, $result2)){
-                //return 'loginOk';
-            }else{
-               // return 'Invalid';
-            }
-        }else{
-            //return 'Invalid';
-       }*/
    }
 }
