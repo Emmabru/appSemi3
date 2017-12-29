@@ -28,7 +28,7 @@ class User {
    }
    public function loginUser(){
         $userPass = $this->dbmanager->getUserPasswordByName($this->username);
-        if($this->password == $userPass){
+        if(password_verify($this->password, $userPass)){
             return 'loginOk';            
         } else {
             return 'Invalid';

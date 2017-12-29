@@ -22,13 +22,13 @@ class dbmanager {
     public function getUserPasswordByName($username){
         $usernameSafe = mysqli_real_escape_string($this->conn, $username);     
         $query = "SELECT password FROM user WHERE username ='".$usernameSafe."';";
-        echo $query;
+        //echo $query;
         $result = mysqli_query($this->conn, $query);
         if($result == false || $result == FALSE){
             echo "FAIL!!!!";
         }
         $row = mysqli_fetch_assoc($result);
-        echo $row['password'];
+        //echo $row['password'];
         return $row['password'];
     }
 
